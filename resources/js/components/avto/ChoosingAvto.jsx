@@ -1,7 +1,16 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 
 function ChoosingAvto () {
+    const getCars = () => {
+        axios.get('/get-cars')
+            .then((res) => console.log('res', res))
+            .catch((err) => console.log('error', err))
+    }
+
+    useEffect(() => {
+        getCars()
+    }, [])
     return (
         <>
             <div className="container">
