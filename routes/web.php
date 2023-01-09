@@ -22,6 +22,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/get-cars', [CarController::class, 'getCars']);
+    Route::get('/get-cars/{startDate}/{endDate}', [CarController::class, 'getCars']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });

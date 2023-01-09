@@ -16,5 +16,10 @@
         "react-dom": "^18.2.0",
         "sass": "^1.56.1",
         "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@mui/material": "^5.11.4"
     }
 }
