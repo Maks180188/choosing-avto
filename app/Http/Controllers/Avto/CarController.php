@@ -18,13 +18,14 @@ class CarController extends Controller
         $role = UserController::getUserRole();
 
         $carClass = match ($role) {
-          'worker' => 3,
-          'manager' => 2,
-          'top-manager' => 1
+            'worker' => 3,
+            'manager' => 2,
+            'top-manager' => 1
         };
 
         $startDate = $request->get('startDate');
         $endDate = $request->get('endDate');
+
         $freeCars = ReservedCar::has('cars')->where(function ($query) use ($startDate, $endDate) {
             $query->where('start_busy_date', '<', $startDate)
                 ->where('end_busy_date', '<', $startDate);
@@ -42,7 +43,8 @@ class CarController extends Controller
         return CarCollection::make($cars);
     }
 
-    public function reserveCar(Request $request) {
+    public function reserveCar(Request $request): string
+    {
         ReservedCar::create([
             'car_id' => $request->get('id'),
             'user_id' => Auth::user()->id,
