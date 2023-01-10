@@ -18,18 +18,23 @@ function ChoosingAvto () {
     const [endDate, setEndDate] = useState(null)
 
     const getCars = (startDate, endDate) => {
-        axios.get(`/get-cars/${startDate}/${endDate}`)
+        axios.post(`/get-cars`, {
+            startDate: startDate,
+            endDate: endDate,
+        })
             .then((res) => {
                 console.log('res', res.data.data)
                 setCars(res.data.data);
             }
         )
-            .catch((err) => console.log('error', err))
+            .catch((err) => {
+                console.log('error', err)
+                if (err.response.status === 422) {
+                    setErrors(err.response.data.errors);
+                }
+            }
+        )
     }
-
-    // useEffect(() => {
-    //     getCars()
-    // }, [])
 
     const handleOnClick = () => {
         setOpen(!open)
@@ -41,18 +46,15 @@ function ChoosingAvto () {
 
     const acceptHandle = (event) => {
         event.preventDefault();
-        console.log('here');
         getCars(startDate, endDate)
 
     };
 
     const onStartDateChange = (event) => {
-        console.log('value', event.target.value)
         setStartDate(event.target.value);
     }
 
     const onEndDateChange = (event) => {
-        console.log('onEndDateChange')
         setEndDate(event.target.value)
     }
 
@@ -75,8 +77,8 @@ function ChoosingAvto () {
                         type="date"
                         id="outlined-basic"
                         variant="filled"
-                        error={!!errors.start_date}
-                        helperText={errors.start_date}
+                        error={errors.startDate}
+                        helperText={errors.startDate}
                         onChange={onStartDateChange}
                     />
                     <DialogContentText>
@@ -86,8 +88,8 @@ function ChoosingAvto () {
                         type="date"
                         id="outlined-basic"
                         variant="filled"
-                        error={!!errors.end_date}
-                        helperText={errors.end_date}
+                        error={!!errors.endDate}
+                        helperText={errors.endDate}
                         onChange={onEndDateChange}
                         />
                 </DialogContent>

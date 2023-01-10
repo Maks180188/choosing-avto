@@ -18,8 +18,6 @@ class CarResource extends JsonResource
             'type' => $this->resource->type,
             'vin' => $this->resource->vin,
             'vrm' => $this->resource->vrm,
-            'start_busy_date' => $this->resource->start_busy_date,
-            'end_busy_date' => $this->resource->end_busy_date,
         ];
     }
 }

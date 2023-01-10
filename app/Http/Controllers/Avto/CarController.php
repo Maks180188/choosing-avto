@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Avto;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
+use App\Http\Requests\GetAvailableCarsRequest;
 use App\Http\Resources\CarCollection;
 use App\Models\Car;
-use Illuminate\Http\Request;
+use App\Models\ReservedCar;
 
 class CarController extends Controller
 {
-    public function getCars($startDate, $endDate): CarCollection
+    public function getCars(GetAvailableCarsRequest $request)
     {
         $role = UserController::getUserRole();
         $carClass = match ($role) {
@@ -19,23 +20,22 @@ class CarController extends Controller
           'top-manager' => 1
         };
 
-        $cars = Car::where(function ($query) use ($startDate, $endDate) {
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+        $freeCars = ReservedCar::has('cars')->where(function ($query) use ($startDate, $endDate) {
             $query->where('start_busy_date', '<', $startDate)
                 ->where('end_busy_date', '<', $startDate);
         })->orWhere(function ($query) use ($startDate, $endDate) {
             $query->where('start_busy_date', '>', $endDate)
                 ->where('end_busy_date', '>', $endDate);
         })
-            ->where('class', $carClass)
-            ->get();
+            ->pluck('id')->toArray();
 
-//        $cars = Car::where('class', $carClass)
-//            ->where('start_busy_date', '<', $startDate)
-//            ->where('end_busy_date', '<', $startDate)
-//
-//            ->where('start_busy_date', '>', $endDate)
-//            ->where('end_busy_date', '>', $endDate)
-//            ->get();
+        $notReservedCars = Car::doesntHave('reservedCars')->where('class', $carClass)->pluck('id')->toArray();
+
+        $ids = array_merge($freeCars, $notReservedCars);
+        $cars = Car::whereIn('id', $ids)->where('class', $carClass)->get();
+
         return CarCollection::make($cars);
     }
 }
