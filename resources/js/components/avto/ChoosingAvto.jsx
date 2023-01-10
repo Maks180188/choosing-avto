@@ -9,6 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Box} from "@mui/material";
+import AvtoTable from "./AvtoTable";
 
 function ChoosingAvto () {
     const [cars, setCars] = useState([])
@@ -25,6 +26,7 @@ function ChoosingAvto () {
             .then((res) => {
                 console.log('res', res.data.data)
                 setCars(res.data.data);
+                setOpen(false)
             }
         )
             .catch((err) => {
@@ -99,6 +101,7 @@ function ChoosingAvto () {
                 </DialogActions>
                 </Box>
             </Dialog>
+            { cars.length ? (<AvtoTable cars={cars}/>):('')}
         </>
     );
 }
