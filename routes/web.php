@@ -23,5 +23,6 @@ Auth::routes();
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/get-cars', [CarController::class, 'getCars']);
+    Route::post('/reserve-car', [CarController::class, 'reserveCar']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });

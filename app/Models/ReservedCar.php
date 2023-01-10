@@ -10,6 +10,8 @@ class ReservedCar extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['car_id', 'user_id', 'start_busy_date', 'end_busy_date',];
+
     public function cars(): hasOne
     {
         return $this->hasOne(Car::class, 'id', 'car_id');

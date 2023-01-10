@@ -18,7 +18,7 @@ function ChoosingAvto () {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
 
-    const getCars = (startDate, endDate) => {
+    const getCars = () => {
         axios.post(`/get-cars`, {
             startDate: startDate,
             endDate: endDate,
@@ -48,7 +48,7 @@ function ChoosingAvto () {
 
     const acceptHandle = (event) => {
         event.preventDefault();
-        getCars(startDate, endDate)
+        getCars()
 
     };
 
@@ -59,6 +59,10 @@ function ChoosingAvto () {
     const onEndDateChange = (event) => {
         setEndDate(event.target.value)
     }
+
+    useEffect(() => {
+        setCars(cars)
+    }, [cars])
 
     return (
         <>
@@ -101,7 +105,12 @@ function ChoosingAvto () {
                 </DialogActions>
                 </Box>
             </Dialog>
-            { cars.length ? (<AvtoTable cars={cars}/>):('')}
+            { cars.length ? (<AvtoTable
+                cars={cars}
+                startDate={startDate}
+                endDate={endDate}
+                updateList={getCars}
+            />):('')}
         </>
     );
 }

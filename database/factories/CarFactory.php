@@ -19,7 +19,7 @@ class CarFactory extends Factory
         return [
             'class' => fake()->randomElement([1, 2, 3,]),
             'model' => fake()->randomElement(['bmv', 'audi', 'volkswagen', 'lada', 'toyota', 'volvo']),
-            'type' => fake()->randomElement(['type1', 'typ2', 'type3', 'type4', 'type5', 'type6']),
+            'type' => fake()->randomElement(['type1', 'type2', 'type3', 'type4', 'type5', 'type6']),
             'vin' => fake()->uuid,
             'vrm' => fake()->uuid,
         ];
